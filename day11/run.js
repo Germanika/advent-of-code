@@ -22,14 +22,9 @@ const countAdjacent = (x, y, layout) => {
     [x + 1, y - 1],
     [x + 1, y],
     [x + 1, y + 1]
-  ].reduce((count, [x, y]) => {
-    try {
-      let value = layout[x][y]
-      return value === states.occupied ? count + 1 : count
-    } catch (e) {
-      return count
-    }
-  }, 0)
+  ].reduce((count, [x, y]) =>
+      layout[x]?.[y] === states.occupied ? count + 1 : count
+  , 0)
 }
 
 const getNextSeatPart1 = layout => (x, y, value) => {
@@ -65,27 +60,20 @@ const rearrangeSeats = (currentLayout, getNextSeat) => {
 
 
 // Part 2
-const getSeat = (layout,row,col) => {
-  try {
-    return layout[row][col]
-  } catch {
-    return undefined
-  }
-}
-const checkSightline = (row, col, layout) => increment => {
+const checkDirection = (row, col, layout) => increment => {
   let [nextRow, nextCol] = increment(row, col)
-  let nextSeat = getSeat(layout, nextRow, nextCol)
+  let nextSeat = layout[row]?.[col]
   while (nextSeat) {
     if (nextSeat === states.occupied) return true;
     if (nextSeat === states.empty) return false;
     [nextRow,nextCol] = increment(nextRow, nextCol)
-    nextSeat = getSeat(layout, nextRow, nextCol)
+    nextSeat = layout[row]?.[col]
   }
   return false
 }
 const countVisiblyAdjacent = (row, col, layout) => {
   let visible = 0
-  let checkLine = checkSightline(row,col,layout);
+  let checkLine = checkDirection(row,col,layout);
   [
     (x, y) => [x - 1, y],
     (x, y) => [x - 1, y - 1],
@@ -95,14 +83,11 @@ const countVisiblyAdjacent = (row, col, layout) => {
     (x, y) => [x + 1, y + 1],
     (x, y) => [x + 1, y],
     (x, y) => [x + 1, y - 1],
-  ].forEach((increment, index) => {
-    const check = checkLine(increment)
-    // console.log('checked ', row, col, check, index)
+  ].forEach(increment => {
     visible = checkLine(increment) ? visible + 1 : visible
   })
   return visible
 }
-
 
 const getNextSeatPart2 = layout => (x, y, value) => {
   if (value === states.floor) return value
