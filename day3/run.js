@@ -11,30 +11,18 @@ const getPriority = (letter => {
 
 const part1 = () =>
   lines
-    .map(line => [line.slice(0, line.length / 2), line.slice(line.length / 2)])
-    .map(([first, second]) => first.split('').find(char => second.includes(char))
+    .map(line => ([line.slice(0, line.length / 2), line.slice(line.length / 2)]))
+    .map(([first, second]) => first.split('').find(char => second.includes(char)))
     .map(getPriority)
     .reduce((sum, priority) => sum + priority, 0)
-  )
 
-const part2 = () => {
-  let groups = [];
-  let currentGroup = [];
-
-  // Split into groups of 3
-  lines.forEach((line, index) => {
-    currentGroup.push(line)
-    if (index && index % 3 === 2) {
-      groups.push(currentGroup)
-      currentGroup = []
-    }
-  })
-
-  return groups
+const part2 = () =>
+  new Array(lines.length / 3)
+    .fill('')
+    .map(_ => lines.splice(0, 3))
     .map(([first, second, third]) => first.split('').find(char => second.includes(char) && third.includes(char)))
     .map(getPriority)
     .reduce((sum, curr) => sum + curr, 0)
-}
 
 console.log('Part 1:', part1())
 console.log('Part 2:', part2())
