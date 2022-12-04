@@ -1,6 +1,7 @@
 import fs from 'fs'
 
-const lines = fs.readFileSync('input.txt', 'utf8').toString().split('\n')
+const i = fs.readFileSync('input.txt', 'utf8').toString()
+const lines = i.split('\n')
 
 /**
  *  Turn input into this shape:
@@ -28,6 +29,7 @@ const part1 = () =>
       : sum
   }, 0)
 
+const golf1 = () => i.split`\n`.map(l=>l.split(/,|-/)).reduce((t,[a,b,c,d])=>(a-c^d-b)>=0||(c-a^b-d)>=0?t+1:t,0)
 
 const part2 = () =>
   pairs.reduce((sum, [first, second]) => {
@@ -39,5 +41,9 @@ const part2 = () =>
       : sum
   }, 0)
 
+const golf2 = () => i.split`\n`.map(l=>l.split(/,|-/)).reduce((t,[a,b,c,d])=>d-a^b-c>=0?t+1:t,0)
+
 console.log('Part 1:', part1())
+console.log('Golf1', golf1())
 console.log('Part 2:', part2())
+console.log('Golf2', golf2())
