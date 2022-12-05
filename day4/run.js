@@ -29,19 +29,16 @@ const part1 = () =>
       : sum
   }, 0)
 
-const golf1 = () => i.split`\n`.map(l=>l.split(/,|-/)).reduce((t,[a,b,c,d])=>(a-c^d-b)>=0||(c-a^b-d)>=0?t+1:t,0)
+const golf1 = () => i.split`\n`.map(l=>l.split(/,|-/)).filter(([a,b,c,d])=>(a-c^d-b)>=0||(c-a^b-d)>=0).length
 
 const part2 = () =>
-  pairs.reduce((sum, [first, second]) => {
-    const firstInSecond = second.start <= first.start && second.end >= first.start
-    const secondInFirst = first.start <= second.start && first.end >= second.start
-
-    return firstInSecond || secondInFirst
+  pairs.reduce((sum, [first, second]) =>
+    second.end >= first.start && first.end >= second.start
       ? ++sum
       : sum
-  }, 0)
+  , 0)
 
-const golf2 = () => i.split`\n`.map(l=>l.split(/,|-/)).reduce((t,[a,b,c,d])=>d-a^b-c>=0?t+1:t,0)
+const golf2 = () => i.split`\n`.map(l=>l.split(/,|-/)).filter(([a,b,c,d])=>(d-a^b-c)>=0).length
 
 console.log('Part 1:', part1())
 console.log('Golf1', golf1())
