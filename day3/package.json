@@ -1,0 +1,9 @@
+{
+  "name": "advent-of-code",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "main": "run.js",
+  "author": "",
+  "license": "ISC"
+}
