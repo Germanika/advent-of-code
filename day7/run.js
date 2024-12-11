@@ -4,6 +4,9 @@ const args = process.argv.slice(2)
 const inputFile = args[0] ?? 'input.txt'
 
 const input = fs.readFileSync(inputFile, 'utf8').toString();
+/**
+ * { test: 47, numbers: [1, 2, 3] }
+ */
 const lines = input.split('\n').map(line =>  {
   const [test, rest] = line.split(': ')
   const numbers = rest.split(' ').map(x => Number(x))
@@ -46,13 +49,9 @@ const getAllCombos = (operators, length) => {
 }
 
 const interleave = ([x, ...arr1], [y, ...arr2]) => {
-  if (arr1.length === 0) {
-    return [x,y,...arr2]
-  }
-  if (arr2.length === 0) {
-    return [x,y,...arr1]
-  }
-  return [x,y,...interleave(arr1,arr2)]
+  if (arr1.length === 0) return [x, y, ...arr2]
+  if (arr2.length === 0) return [x, y, ...arr1]
+  return [x, y, ...interleave(arr1, arr2)]
 }
 
 const part1 = () => {
@@ -82,6 +81,7 @@ const part2 = () => {
       const numCombos = numbers.length - 1
       const combos = getAllCombos(operators, numCombos)
 
+      // find the first combo that works
       return combos.some(combo => {
         const equation = interleave(numbers, combo)
         if (evaluate(equation) === test) {

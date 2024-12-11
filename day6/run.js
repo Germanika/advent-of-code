@@ -6,17 +6,14 @@ const inputFile = args[0] ?? 'input.txt'
 const input = fs.readFileSync(inputFile, 'utf8').toString();
 const grid = input.split('\n').map(line => line.split(''))
 
-let startCol;
-let startRow
+let initialPos
 
-for(let i=0; i<grid.length; i++) {
-  for(let j=0; j<grid[0].length; j++) {
-    if(grid[i][j] === '^') {
-      startRow = i
-      startCol = j
-    }
+grid.find((row, x) => row.find((value, y) => {
+  if (value === '^') {
+    initialPos = {x,y,direction: 'up'}
+    return true
   }
-}
+}))
 
 const isLegal = (pos) => pos.x >=0 && pos.x < grid.length && pos.y >=0 && pos.y < grid[0].length
 
@@ -61,11 +58,7 @@ const part1 = () => {
    * at each step, add to set of "visited" coords
    * stop when reaching out of bounds
    */
-  let pos = {
-    x: startRow,
-    y: startCol,
-    direction: 'up',
-  }
+  let pos = {...initialPos}
 
   const visited = new Set();
   const id = ({x,y}) => `${x},${y}`
@@ -88,11 +81,7 @@ const part2 = () => {
   const containsCycle = grid => {
     const visited = new Set([]);
     const id = ({x,y,direction}) => `${x},${y},${direction}`
-    let pos = {
-      x: startRow,
-      y: startCol,
-      direction: 'up',
-    }
+    let pos = {...initialPos}
   
     while(isLegal(pos)) {
       // back where we started
@@ -108,15 +97,13 @@ const part2 = () => {
 
   let goodObstacles = 0;
 
-  for (let i=0; i < grid.length; i++) {
-    for (let j=0; j < grid[0].length; j++) {
-      const testGrid = grid.map(row => row.slice())
-      if (!['^','#'].includes(grid[i][j])) {
-        testGrid[i][j] = '#'
-        goodObstacles += containsCycle(testGrid) ? 1 : 0
-      }
+  grid.forEach((row,i) => row.forEach((value, j) => {
+    const testGrid = grid.map(row => row.slice())
+    if (!['^','#'].includes(value)) {
+      testGrid[i][j] = '#'
+      goodObstacles += containsCycle(testGrid) ? 1 : 0
     }
-  }
+  }))
   return goodObstacles
 }
 

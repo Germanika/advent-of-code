@@ -41,14 +41,12 @@ const part1 = () => {
 
 
   let total = 0
-  for(let i = 0; i < grid.length; i++) {
-    for (let j = 0; j < grid[0].length; j++) {
-      if (grid[i][j] === 'X') {
-        const count = countXmas(i, j)
-        total += count
-      }
+  grid.forEach((row,i) => row.forEach((value, j) => {
+    if (value === 'X') {
+      const count = countXmas(i, j)
+      total += count
     }
-  }
+  }))
   return total
 }
 
@@ -74,14 +72,12 @@ const part2 = () => {
 
 
   let total = 0
-  for(let i = 0; i < grid.length; i++) {
-    for (let j = 0; j < grid[0].length; j++) {
-      if (grid[i][j] === 'A') {
-        const count = countXmas(i, j)
-        total += count
-      }
+  grid.forEach((row,i) => row.forEach((value, j) => {
+    if (value === 'A') {
+      const count = countXmas(i, j)
+      total += count
     }
-  }
+  }))
   return total
 }
 

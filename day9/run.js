@@ -36,12 +36,14 @@ const checksum = (disc) => disc.reduce((total, value, index) => value === '.' ? 
 const part1 = () => {
   let disc = initDisc()
 
-  for (let i=0; i<disc.length; i++) {
-    if (disc[i] === '.') {
+  disc.forEach((value, i) => {
+    if (value === '.') {
       const toSwap = disc.findLastIndex(c => c !== '.')
-      if (i < toSwap) swap(disc, i, toSwap)
+      if (i < toSwap) {
+        swap(disc, i, toSwap)
+      }
     }
-  }
+  })
 
   return checksum(disc)
 }
