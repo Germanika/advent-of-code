@@ -17,41 +17,39 @@ const part1 = () => {
   // Remove any duplicate pair of coords
   const map = new Map()
 
-  const hike = (start,row,col) => {
+  const hike = (start, row, col) => {
     const num = grid[row][col]
-    if (num == 9) {
+    if (num === 9) {
       let set = map.get(start)
       const end = `${row},${col}`
       set.add(end)
     }
     const next = num + 1
     //up
-    if (row - 1 >= 0 && grid[row-1][col] == next) {
+    if (row - 1 >= 0 && grid[row-1][col] === next) {
       hike(start, row-1, col)
     }
     //right
-    if(col+1<clen &&grid[row][col+1]==next){
-      hike(start,row,col+1)
+    if(col + 1 < clen && grid[row][col+1] === next){
+      hike(start, row, col + 1)
     }
     //down
-    if(row+1<rlen&&grid[row+1][col]==next){
-      hike(start,row+1,col)
+    if(row + 1 < rlen && grid[row+1][col] === next){
+      hike(start, row + 1, col)
     }
     //left
-    if(col-1>=0&&grid[row][col-1]==next) {
-      hike(start,row,col-1)
+    if(col - 1 >= 0 && grid[row][col-1] === next) {
+      hike(start, row, col - 1)
     }
   }
 
-  for(let row=0; row<grid.length; row++) {
-    for (let col=0; col<grid[0].length; col++) {
-      if (grid[row][col] == 0) {
-        const start = `${row},${col}`
-        map.set(start, new Set())
-        hike(start,row,col)
-      }
+  grid.forEach((row, x) => row.forEach((value, y) => {
+    if (value === 0) {
+      const start = `${x},${y}`
+      map.set(start, new Set())
+      hike(start, x, y)
     }
-  }
+  }))
 
   let total = 0
   map.forEach((value) => total += value.size)
@@ -61,42 +59,40 @@ const part1 = () => {
 const part2 = () => {
   const map = new Map()
 
-  const hike = (start,row,col) => {
+  const hike = (start, row, col) => {
     const num = grid[row][col]
 
-    if (num == 9) {
+    if (num === 9) {
       let rating = map.get(start)
-      map.set(start,rating + 1)
+      map.set(start, rating + 1)
     }
 
     const next = num + 1
 
-    if (row - 1 >= 0 && grid[row-1][col] == next) {
-      hike(start, row-1, col)
+    if (row - 1 >= 0 && grid[row-1][col] === next) {
+      hike(start, row - 1, col)
     }
 
-    if(col+1<clen &&grid[row][col+1]==next){
-      hike(start,row,col+1)
+    if(col + 1 < clen && grid[row][col+1] === next){
+      hike(start, row ,col + 1)
     }
 
-    if(row+1<rlen&&grid[row+1][col]==next){
-      hike(start,row+1,col)
+    if(row + 1 < rlen && grid[row+1][col] === next){
+      hike(start, row + 1, col)
     }
 
-    if(col-1>=0&&grid[row][col-1]==next) {
-      hike(start,row,col-1)
+    if(col - 1 >= 0 && grid[row][col-1] === next) {
+      hike(start, row, col - 1)
     }
   }
 
-  for(let row=0; row<grid.length; row++) {
-    for (let col=0; col<grid[0].length; col++) {
-      if (grid[row][col] == 0) {
-        const start = `${row},${col}`
-        map.set(start, 0)
-        hike(start,row,col)
-      }
+  grid.forEach((row, x) => row.forEach((value, y) => {
+    if (value === 0) {
+      const start = `${x},${y}`
+      map.set(start, 0)
+      hike(start, x, y)
     }
-  }
+  }))
 
   let total = 0
   map.forEach(value => total += value)
