@@ -29,39 +29,27 @@ const shouldSpread = ((plant, adjacent) =>
   adjacent && !adjacent.region && adjacent.plant === plant
 )
 
-const spreadRegion = (x, y) => {
-  const {plant, region} = farm[x][y]
+const spreadRegion = (x, y, region) => {
+  farm[x][y].region = region
+  const {plant} = farm[x][y]
   const top = y > 0 ? farm[x][y - 1] : null
-  if (shouldSpread(plant, top)) {
-    top.region = region
-    spreadRegion(x, y - 1)
-  }
   const bottom = y < farm[0].length - 1 ? farm[x][y + 1] : null
-  if (shouldSpread(plant, bottom)) {
-    bottom.region = region
-    spreadRegion(x, y + 1)
-  }
   const left = x > 0 ? farm[x - 1][y] : null
-  if (shouldSpread(plant, left)) {
-    left.region = region
-    spreadRegion(x - 1, y)
-  }
   const right = x < farm.length - 1 ? farm[x + 1][y] : null;
-  if (shouldSpread(plant, right)) {
-    right.region = region
-    spreadRegion(x + 1, y)
-  }
+
+  if (shouldSpread(plant, top)) spreadRegion(x, y - 1, region)
+  if (shouldSpread(plant, bottom)) spreadRegion(x, y + 1, region)
+  if (shouldSpread(plant, left)) spreadRegion(x - 1, y, region)
+  if (shouldSpread(plant, right)) spreadRegion(x + 1, y, region)
 }
+
 
 // go through the plot and add stuff to regions!
 // how do we know it's in a region?
 // any adjacent plot of the same type? -> add to region
 grid.forEach((row, x) => row.forEach((plant, y) => {
   const plot = farm[x][y];
-  if (!plot.region) {
-    plot.region = nextId()
-    spreadRegion(x,y)
-  }
+  if (!plot.region) spreadRegion(x,y, nextId())
 }))
 
 const part1 = () => {
