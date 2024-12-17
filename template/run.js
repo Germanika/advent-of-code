@@ -1,4 +1,5 @@
 import fs from 'fs'
+import {log, time, timeEnd} from 'console'
 
 const args = process.argv.slice(2)
 const inputFile = args[0] ?? 'input.txt'
@@ -14,5 +15,11 @@ const part2 = () => {
 
 }
 
-console.log('Part 1:', part1())
-console.log('Part 2:', part2())
+
+time('part 1')
+log(part1())
+timeEnd('part 1')
+
+time('part 2')
+log(part2())
+timeEnd('part 2')
