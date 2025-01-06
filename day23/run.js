@@ -13,10 +13,10 @@ const computers = new Set()
 
 lines.forEach(([a, b]) => {
   // maybe should be a set?
-  let currA = connections.get(a) ?? []
-  let currB = connections.get(b)?? []
-  connections.set(a, [...currA, b])
-  connections.set(b, [...currB, a])
+let currA = connections.get(a) ?? new Set()
+  let currB = connections.get(b)?? new Set()
+  connections.set(a, currA.add(b))
+  connections.set(b, currB.add(a))
   computers.add(a, b)
 })
 
@@ -27,7 +27,7 @@ const expand = (groups) => {
     const newGroups = []
     computers.forEach((c1) => {
       const conns = connections.get(c1)
-      if (!group.includes(c1) && group.every(c2 => conns.includes(c2))) {
+      if (!group.includes(c1) && group.every(c2 => conns.has(c2))) {
         newGroups.push([...group, c1])
       }
     })
@@ -46,6 +46,7 @@ const part1 = () => {
   }).length
 }
 
+// TODO: look up Bron-Kerbosch algorithm
 const part2 = () => {
   // find groups of 3, using groups of 2
   // find groups of 4, using groups of 3
